@@ -107,9 +107,50 @@ void SmartButton::handle() {
 }
 
 void SmartButton::handleCallbacks() {
+	//--------------------------------------------------
 	if(multiCallbackFlag) {
-		if(user_MultiClicked) user_MultiClicked(num, multiCallbackFlag);
+		if(user_MultiClicked) {
+			#if defined(DEBUG_BTN)
+			  DEBUG_BTN.println("--> MultiClick");
+			#endif
+			user_MultiClicked(num, multiCallbackFlag);
+		}
 		multiCallbackFlag = false;
+	}
+	//--------------------------------------------------
+	if(holdCallbackFlag) {
+		if(user_onHold) {
+			#if defined(DEBUG_BTN)
+			  DEBUG_BTN.println("--> onHold");
+			#endif
+			user_onHold(num);
+		}
+		holdCallbackFlag = false;
+	}
+	//--------------------------------------------------
+	if(pressedCallbackFlag) {
+		if(user_onPressed) {
+			#if defined(DEBUG_BTN)
+				DEBUG_BTN.println("--> onPressed");
+		    #endif
+			user_onPressed(num);
+		}
+		pressedCallbackFlag = false;
+	}
+	//--------------------------------------------------
+	if(releasedCallbackFlag) {		
+		if(user_onReleased) {
+			#if defined(DEBUG_BTN)
+				DEBUG_BTN.println("--> onReleased");
+			#endif
+			user_onReleased(num);
+		}
+		releasedCallbackFlag = false;
+	}
+	//--------------------------------------------------
+	if(clickCallbackFlag) {
+		if(user_onClick) user_onClick(num);
+		clickCallbackFlag = false;
 	}
 }
 
@@ -123,10 +164,7 @@ void SmartButton::handleButtons() {
       else {
 		if(pressed_num>1) {
 			if(user_MultiClicked) {
-				#if defined(DEBUG_BTN)
-				  DEBUG_BTN.println("--> MultiClick");
-				#endif
-				user_MultiClicked(num, pressed_num);
+				multiCallbackFlag = pressed_num;
 			}
 		}
         pressed_timeout = 0;
@@ -139,10 +177,7 @@ void SmartButton::handleButtons() {
         holdCounter++;
         pressed_num = 0;
 		onHoldFlag = true;
-		#if defined(DEBUG_BTN)
-		  DEBUG_BTN.println("--> onHold");
-		#endif
-		if(user_onHold) user_onHold(num);
+		if(user_onHold) holdCallbackFlag = true;
 		if(user_onBeep) user_onBeep();
       }
     }
@@ -153,10 +188,7 @@ void SmartButton::handleButtons() {
           debounceCounter = 0;
           buttonState = true;
 		  onPressedFlag = true;
-		  #if defined(DEBUG_BTN)
-		    DEBUG_BTN.println("--> onPressed");
-		  #endif
-          if(user_onPressed) user_onPressed(num);
+          if(user_onPressed) pressedCallbackFlag = true;
         }
       } else {
         debounceCounter = 0;
@@ -170,13 +202,10 @@ void SmartButton::handleButtons() {
           pressed_num++;
           pressed_timeout = 0;
 		  onReleasedFlag = true;
-		  #if defined(DEBUG_BTN)
-		    DEBUG_BTN.println("--> onReleased");
-		  #endif
-		  if(user_onReleased) user_onReleased(num);
+		  if(user_onReleased) releasedCallbackFlag = true;
 		  if(holdCounter < holder) {
 			onClickFlag = true;
-		    if(user_onClick) user_onClick(num);
+		    if(user_onClick) clickCallbackFlag = true;
 			if(user_onBeep)  user_onBeep();
 		  }
           holdCounter = 0;
@@ -185,6 +214,8 @@ void SmartButton::handleButtons() {
         debounceCounter = 0;
       }
     }
+	// ToDo: добавить функцию для активации колбеков из главного цикла
+	//handleCallbacks();
 }
 
 void SmartButton::resetButtons() {
