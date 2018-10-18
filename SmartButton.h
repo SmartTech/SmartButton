@@ -13,10 +13,10 @@ class SmartButton {
   typedef void (*EventCallback1)(int);
   typedef void (*EventCallback2)(int, int);
   
-  unsigned int  holdCounter     = false;
-  unsigned int  debounceCounter = false;
-  unsigned int  pressed_timeout = false;
-  unsigned long handleMicros    = false;
+  unsigned int  holdCounter      = false;
+  unsigned int  debounceCounter  = false;
+  unsigned int  pressed_timeout  = false;
+  unsigned long handleMicros     = false;
 
   bool begined        = false;
   bool buttonState    = false;
@@ -42,6 +42,7 @@ class SmartButton {
   byte pressed_num = false;
   bool active      = LOW;
   byte* btn        = false;    // указатель виртуальной кнопки
+  int  multiPeriod = 500;
   
   EventCallback2 user_MultiClicked = false;
   EventCallback1 user_onClick      = false;
@@ -60,6 +61,8 @@ class SmartButton {
   void setActive(bool _active);
   void setDebounce(uint8_t _debounce);
   void setHold(uint16_t _hold);
+  void setMultiPeriod(uint16_t _period);
+  
   void handle();
   void handleLoop();
   void handleCallbacks();

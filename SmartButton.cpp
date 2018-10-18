@@ -26,6 +26,7 @@ void SmartButton::begin(byte* btn_ptr, int _hold, int _debounce) {
 
 void SmartButton::setHold(uint16_t _hold) { holder = _hold; }
 void SmartButton::setDebounce(uint8_t _debounce) { debounce = _debounce; }
+void SmartButton::setMultiPeriod(uint16_t _period) { multiPeriod = _period; }
 void SmartButton::setActive(bool _active) { 
   active = _active;
   if(!btn) {
@@ -158,7 +159,7 @@ void SmartButton::handleCallbacks() {
 void SmartButton::handleButtons() {
 	resetButtons();
 	if(pressed_num) {
-      if(pressed_timeout < 500) {
+      if(pressed_timeout < multiPeriod) {
 		  pressed_timeout++;
 	  }
       else {
