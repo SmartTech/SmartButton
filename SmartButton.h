@@ -41,15 +41,15 @@ class SmartButton {
   int  num         = false;
   byte pressed_num = false;
   bool active      = LOW;
-  byte* btn        = false;    // указатель виртуальной кнопки
+  byte* btn        = NULL;    // указатель виртуальной кнопки
   int  multiPeriod = 500;
   
-  EventCallback2 user_MultiClicked = false;
-  EventCallback1 user_onClick      = false;
-  EventCallback1 user_onHold       = false;
-  EventCallback1 user_onPressed    = false;
-  EventCallback1 user_onReleased   = false;
-  EventCallback  user_onBeep       = false;
+  EventCallback2 user_MultiClicked = NULL;
+  EventCallback1 user_onClick      = NULL;
+  EventCallback1 user_onHold       = NULL;
+  EventCallback1 user_onPressed    = NULL;
+  EventCallback1 user_onReleased   = NULL;
+  EventCallback  user_onBeep       = NULL;
   
   public:
   
