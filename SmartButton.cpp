@@ -70,17 +70,19 @@ void SmartButton::setBeep(EventCallback function) { user_onBeep = function; }
 void SmartButton::click(uint8_t _count) {
 	if(!_count) return;
 	if(_count==1) {
-		if(!user_onClick) return;
-		#if defined(DEBUG_BTN)
-			DEBUG_BTN.println("--> Virtual onClick");
-		#endif
-		user_onClick(num);
+		//if(!user_onClick) return;
+		//#if defined(DEBUG_BTN)
+		//	DEBUG_BTN.println("--> Virtual onClick");
+		//#endif
+		//user_onClick(num);
+		clickCallbackFlag = true;
 	} else {
-		if(!user_MultiClicked) return;
-		#if defined(DEBUG_BTN)
-		  DEBUG_BTN.println("--> Virtual MultiClick");
-		#endif
-		user_MultiClicked(num, _count);
+		//if(!user_MultiClicked) return;
+		//#if defined(DEBUG_BTN)
+		//  DEBUG_BTN.println("--> Virtual MultiClick");
+		//#endif
+		//user_MultiClicked(num, _count);
+		multiCallbackFlag = _count;
 	}
 }
 
